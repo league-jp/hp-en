@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIVIKO Co.Ltd</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,340;9..144,440;9..144,560&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f7f9;
+    --paper-raised: #e9f0f4;
+    --paper-deep: #dde9ee;
+    --ink: #131c24;
+    --ink-soft: #48596a;
+    --ink-faint: #8598a5;
+    --rule: #cfdde3;
+    --brand: #DCDCDC;       /* クライアントの「基調色」をそのままCSS変数に流し込む */
+    --brand-light: #DCDCDC;
+    --brand-wash: color-mix(in srgb, #DCDCDC 16%, var(--paper));
+    --warm: #b9803a;
+  }
+  * { box-sizing: border-box; }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; } }
+  body { background: var(--paper); color: var(--ink); font-family: 'Archivo', 'Hiragino Sans', sans-serif; line-height: 1.7; -webkit-font-smoothing: antialiased; margin: 0; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 2rem; }
+  .label { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand); }
+  h1, h2, h3 { font-family: 'Fraunces', serif; color: var(--ink); margin: 0; }
+  a { color: var(--brand); }
+
+  nav { border-bottom: 1px solid var(--rule); position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(6px); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 0; }
+  .wordmark { display: flex; align-items: center; gap: 0.6rem; font-family: 'Fraunces', serif; font-weight: 560; font-size: 1.15rem; color: var(--ink); }
+  .wordmark img { height: 1.6rem; width: auto; }
+  .wordmark img[src=""] { display: none; } /* 会社ロゴが未提出のときは非表示（社名テキストのみ表示） */
+  .navlinks { display: flex; gap: 1.8rem; font-size: 0.86rem; }
+  .navlinks a { color: var(--ink-soft); text-decoration: none; }
+  @media (max-width: 640px) { .navlinks { display: none; } }
+
+  /* ---------------- HERO（https://drive.google.com/thumbnail?id=1Mcyp3ELS3XJe_Y2o5lVPWvU86BTApQ8A&sz=w2000 を背景に使用） ---------------- */
+  .hero { position: relative; padding: 6.5rem 0 6rem; overflow: hidden; color: #f6f9fa; }
+  .hero-bg { position: absolute; inset: 0; z-index: 0; background: url('https://drive.google.com/thumbnail?id=1Mcyp3ELS3XJe_Y2o5lVPWvU86BTApQ8A&sz=w2000') center/cover no-repeat, linear-gradient(155deg, var(--ink), var(--brand)); }
+  .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, var(--ink) 40%, transparent) 0%, color-mix(in srgb, var(--ink) 80%, transparent) 100%); }
+  .hero-inner { position: relative; z-index: 1; max-width: 640px; }
+  .hero .label { color: #fff; opacity: 0.85; }
+  .hero h1 { font-size: clamp(2.6rem, 6.4vw, 4.4rem); font-weight: 440; font-variation-settings: 'opsz' 90; line-height: 1.08; letter-spacing: -0.01em; margin: 1.6rem 0 1.5rem; color: #fff; }
+  .hero p.dek { font-size: 1.08rem; color: rgba(255,255,255,0.88); max-width: 46ch; }
+
+  section { padding: 4.4rem 0; border-top: 1px solid var(--rule); }
+  .section-head { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2.2rem; }
+  .section-head h2 { font-size: 1.9rem; font-weight: 440; font-variation-settings: 'opsz' 40; }
+  p { max-width: 62ch; color: var(--ink); }
+  p.lede { color: var(--ink-soft); font-size: 1.02rem; max-width: 58ch; }
+  /* 隣に写真やカードが並ばない、単独で置かれるイントロ文（OUR PARTNERS・REFERENCE EXAMPLES）は
+     62ch/58chの制限だと右側に大きな余白ができてしまうため、より広い幅を使えるようにしています */
+  p.wide-copy, p.lede.wide-copy { max-width: 74ch; }
+
+  /* ---------------- ABOUT US（https://drive.google.com/thumbnail?id=1v_-_mzICxudZqTl6mOXaTeZWismJ4OdD&sz=w2000 を差し込み） ---------------- */
+  /* CEOの写真・経歴は「本文の隣に縦長カードを並べる」形だと、本文が短いときに
+     カードの下や右に不自然な余白ができてしまうため、丸い小さな写真＋短い経歴の
+     コンパクトな紹介カードにして、本文の右側に並べる（余白が出にくい）構成にしています。 */
+  .about-photo { width: 100%; aspect-ratio: 21/8; object-fit: cover; border-radius: 3px; border: 1px solid var(--rule); background: var(--paper-deep); display: block; margin-bottom: 2.4rem; }
+  .about-grid { display: grid; grid-template-columns: 1.3fr 0.9fr; gap: 2.6rem; align-items: center; }
+  @media (max-width: 720px) { .about-grid { grid-template-columns: 1fr; } }
+  .ceo-byline { display: flex; gap: 1rem; align-items: flex-start; padding: 1.4rem; border: 1px solid var(--rule); border-radius: 3px; background: var(--paper-raised); }
+  @media (max-width: 480px) { .ceo-byline { gap: 0.8rem; padding: 1.1rem; } }
+  .ceo-photo { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; display: block; background: var(--paper-deep); flex: none; border: 1px solid var(--rule); }
+  .ceo-photo[src=""] { display: none; } /* 代表者/会社の写真が未提出のときは非表示（テキストのみ表示） */
+  .ceo-meta .name { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 560; }
+  .ceo-meta .role { font-size: 0.76rem; color: var(--ink-faint); margin-top: 0.1rem; }
+  /* 経歴が長い場合でもカードが本文より大幅に高くならないよう、4行で省略しています */
+  .ceo-meta p { margin-top: 0.5rem; font-size: 0.86rem; color: var(--ink-soft); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
+
+  /* ---------------- OUR SERVICES（https://drive.google.com/thumbnail?id=1u87a924frFiwTfNqiFFMhcGeG5J7sqPR&sz=w2000 を差し込み） ---------------- */
+  .services-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3rem; align-items: start; }
+  @media (max-width: 720px) { .services-grid { grid-template-columns: 1fr; } }
+  /* 写真の縦横比を4/5（かなり縦長）から4/3にして、右側のリストの高さに近づけています */
+  .services-photo { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 3px; border: 1px solid var(--rule); background: var(--paper-deep); display: block; }
+  .service-list { display: flex; flex-direction: column; }
+  .services-intro { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 0.6rem; }
+  .service-row { display: grid; grid-template-columns: 3.4rem 1fr; gap: 1.4rem; padding: 1.7rem 0; border-top: 1px solid var(--rule); }
+  .service-row:first-child { border-top: none; }
+  .service-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--brand); padding-top: 0.15rem; }
+  .service-row p { color: var(--ink-soft); font-size: 0.98rem; margin: 0; }
+
+  .logo-row { display: flex; flex-wrap: wrap; gap: 2.6rem; margin: 1.8rem 0 2rem; align-items: center; }
+  .logo-group { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; }
+  .logo-group img { height: 3.6rem; width: auto; opacity: 0.92; }
+  .retail-logos { height: auto; width: auto; max-width: 360px; max-height: 150px; opacity: 0.92; border-radius: 3px; }
+  @media (max-width: 720px) { .retail-logos { max-width: 100%; } }
+  .partner-cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-top: 2.2rem; }
+  @media (max-width: 720px) { .partner-cats { grid-template-columns: repeat(2, 1fr); } }
+  .partner-cat { border-top: 1px solid var(--rule); padding-top: 0.8rem; }
+  .partner-cat .k { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); }
+  .partner-cat .v { font-size: 0.92rem; margin-top: 0.3rem; color: var(--ink); }
+
+  .process-track { position: relative; }
+  .process-step { display: grid; grid-template-columns: 3.4rem 1fr; gap: 1.4rem; padding-bottom: 2.6rem; position: relative; }
+  .process-step:last-child { padding-bottom: 0; }
+  .process-step::before { content: ''; position: absolute; left: 1.55rem; top: 2.6rem; bottom: 0; width: 1px; background: var(--rule); }
+  .process-step:last-child::before { display: none; }
+  .process-num { width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 1px solid var(--brand); color: var(--brand); font-family: 'IBM Plex Mono', monospace; font-size: 0.88rem; display: flex; align-items: center; justify-content: center; background: var(--paper); position: relative; z-index: 1; }
+  .process-step h3 { font-size: 1.1rem; font-weight: 500; font-family: 'Archivo', sans-serif; margin-bottom: 0.4rem; }
+  .process-step p { color: var(--ink-soft); font-size: 0.95rem; margin: 0; }
+
+  /* ---------------- REFERENCE EXAMPLES（会社共通の固定画像・1回だけ差し替え） ---------------- */
+  .ref-block { margin-top: 2.8rem; }
+  .ref-heading { font-size: 1.25rem; font-weight: 500; font-family: 'Archivo', sans-serif; margin-bottom: 0.9rem; }
+  .ref-main { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.8rem; align-items: start; }
+  @media (max-width: 720px) { .ref-main { grid-template-columns: 1fr; } }
+  .ref-thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-content: start; }
+  @media (max-width: 480px) { .ref-thumbs { grid-template-columns: 1fr; } }
+  .ref-thumbs figure { margin: 0; }
+  .ref-thumbs img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 3px; border: 1px solid var(--rule); display: block; background: var(--paper-deep); }
+  .ref-thumbs figcaption { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.55rem; line-height: 1.4; }
+  /* 以前は縦のカラム高さいっぱいに引き伸ばしていましたが、サムネイル3枚の列より
+     大幅に縦長になってしまい、左側に大きな空白ができていたため、
+     横長（16/9）の固定比率にして高さの差が出にくいようにしています */
+  .ref-product { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 3px; border: 1px solid var(--rule); background: var(--paper-deep); display: block; }
+
+  /* ---------------- TOKYO INTERNATIONAL GIFT SHOW（固定画像） ---------------- */
+  .giftshow-block { margin-top: 2.6rem; display: grid; grid-template-columns: 1fr 1.4fr; gap: 0; align-items: center; border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+  @media (max-width: 720px) { .giftshow-block { grid-template-columns: 1fr; } }
+  .giftshow-block > img { width: 100%; height: 100%; min-height: 180px; object-fit: cover; display: block; background: var(--paper-deep); }
+  .giftshow-body { padding: 1.6rem 1.8rem; }
+  .giftshow-body .label { display: block; margin-bottom: 0.5rem; }
+  .giftshow-body h3 { font-size: 1.15rem; font-weight: 500; font-family: 'Archivo', sans-serif; margin: 0 0 0.6rem; }
+  .giftshow-body p { font-size: 0.93rem; color: var(--ink-soft); margin: 0; }
+
+  .profile-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+  .profile-table tr { border-top: 1px solid var(--rule); }
+  .profile-table tr:first-child { border-top: none; }
+  .profile-table th, .profile-table td { text-align: left; padding: 0.95rem 0; vertical-align: top; }
+  .profile-table th { font-family: 'IBM Plex Mono', monospace; font-weight: 400; font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); width: 11rem; white-space: nowrap; }
+  .profile-table td { color: var(--ink); font-size: 0.98rem; }
+  .profile-table tr.opt-row:has(td:empty) { display: none; } /* 資本金が未提出のときは行ごと非表示 */
+  .profile-table td.opt-fallback:empty::before { content: "Import / Wholesale / Retail business"; } /* 事業概要が未提出のときのデフォルト文言 */
+
+  footer { border-top: 1px solid var(--rule); padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.8rem; }
+  footer .fine { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <span class="wordmark"><img src="https://drive.google.com/thumbnail?id=1wcUFvCcZqkut18iQ_TIpNc_6X_9twLX_&sz=w2000" alt="LIVIKO Co.Ltd logo">LIVIKO Co.Ltd</span>
+    <div class="navlinks">
+      <a href="#about">ABOUT US</a>
+      <a href="#services">OUR SERVICES</a>
+      <a href="#partners">OUR PARTNERS</a>
+      <a href="#process">MARKET DEVELOPMENT PROCESS</a>
+      <a href="#profile">COMPANY PROFILE</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="wrap hero-inner">
+    <div class="label">Founded in 1976 — JAPAN</div>
+    <h1>For All Delight.</h1>
+    <p class="dek">Making it easier and smoother for foreign manufacturers to enter the Japanese market.</p>
+  </div>
+</header>
+
+<main>
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head"><h2>ABOUT US</h2></div>
+      <img class="about-photo" src="https://drive.google.com/thumbnail?id=1v_-_mzICxudZqTl6mOXaTeZWismJ4OdD&sz=w2000" alt="LIVIKO Co.Ltd">
+      <div class="about-grid">
+        <p class="lede">Our mission is to connect Japan with overseas manufacturers of great products by building a bridge between Japan and the world, and to provide new value through these products to customers throughout Japan.</p>
+        <div class="ceo-byline">
+          <img class="ceo-photo" src="https://drive.google.com/thumbnail?id=1epAMXQpt-IVOjLqs2cGvhwoiSjzCb4CD&sz=w2000" alt="Singo Mugisawa">
+          <div class="ceo-meta">
+            <div class="name">Singo Mugisawa</div>
+            <div class="role">CEO</div>
+            <p> have been involved in the advertising industry for over 20 years and have handled branding initiatives for a wide range of companies. Drawing on that experience, I can develop sales promotion strategies that drive sales in Japan.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head"><h2>OUR SERVICES</h2></div>
+      <div class="services-grid">
+        <img class="services-photo" src="https://drive.google.com/thumbnail?id=1u87a924frFiwTfNqiFFMhcGeG5J7sqPR&sz=w2000" alt="LIVIKO Co.Ltd services">
+        <div class="service-list">
+          <p class="services-intro">We have been running businesses for long period of time and value the following Corporate Identities.</p>
+          <div class="service-row"><div class="service-num">01</div><p>Be a fastest distributor in Japan.</p></div>
+          <div class="service-row"><div class="service-num">02</div><p>Built a long-term relationship.</p></div>
+          <div class="service-row"><div class="service-num">03</div><p>Be a provider of offering the best way to enter and expand into the Japanese market.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="partners">
+    <div class="wrap">
+      <div class="section-head"><h2>OUR PARTNERS</h2></div>
+      <p class="lede wide-copy">We are the "BEST TEAM for promoting your products in Japan."</p>
+      <p class="wide-copy">Our import and wholesale/retail division is working in the special team organization. This team is the best successful and trusted in the Japanese importing industry. This team has a strong track record of success and credibility in the Japanese import industry.</p>
+
+      <!-- ▼ ここにクラウドファンディング・小売パートナーの実ロゴ画像を差し込んでください -->
+      <div class="logo-row">
+        <div class="logo-group">
+          <img src="../logos/makuake.png" alt="Makuake">
+          <img src="../logos/greenfunding.png" alt="GREEN FUNDING">
+          <img src="../logos/campfire.png" alt="CAMPFIRE">
+        </div>
+        <img class="retail-logos" src="../logos/retail-partners.png" alt="Retail partners including LOFT, EDION, YAMADA, 0101 MARUI, BicCamera, Tokyu Hands, Ketaide Denki, Yamada Denki, Yodobashi Camera, ISETAN, MITSUKOSHI, and Don Quijote">
+      </div>
+      <!-- ▲ ここまで -->
+
+      <div class="partner-cats">
+        <div class="partner-cat"><div class="k">Retail</div><div class="v">National & regional chains</div></div>
+        <div class="partner-cat"><div class="k">Wholesale</div><div class="v">Established distributor network</div></div>
+        <div class="partner-cat"><div class="k">Media</div><div class="v">Influencer & press relationships</div></div>
+        <div class="partner-cat"><div class="k">Social</div><div class="v">SNS promotion partners</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head"><h2>MARKET DEVELOPMENT PROCESS</h2></div>
+      <div class="process-track">
+        <div class="process-step">
+          <div class="process-num">1</div>
+          <div><h3>Market Entry Strategy</h3><p>Create a track record of successful sales. Raise a fund for marketing of general sales.</p></div>
+        </div>
+        <div class="process-step">
+          <div class="process-num">2</div>
+          <div><h3>Media Strategy</h3><p>Use the following to rapidly spread awareness: TV show, WEB media, Magazine, Press release, SNS (YouTube, IG, FB etc.), Influencers, Advertisement.</p></div>
+        </div>
+        <div class="process-step">
+          <div class="process-num">3</div>
+          <div><h3>Sales Expansion</h3><p>Expand sales by leveraging successful crowdfunding results and the effect of increased public awareness through media approach.</p></div>
+        </div>
+      </div>
+
+      <!-- ▼ REFERENCE EXAMPLES: 商品・メディア掲載の実績画像（全クライアント共通・固定資産）を差し込んでください -->
+      <div class="ref-block">
+        <h3 class="ref-heading">REFERENCE EXAMPLES</h3>
+        <p class="wide-copy">TOWNEW automatic trash cans in all product series have been extremely successful in multiple crowdfunding projects. We have expanded our sales channels to major mass retailers by increasing awareness through TV and other media outlets and influencers.</p>
+
+        <div class="ref-main">
+          <div class="ref-thumbs">
+            <figure>
+              <img src="../images/case-thumb1.jpg" alt="Crowdfunding project record">
+              <figcaption>Multiple crowdfunding projects with all series</figcaption>
+            </figure>
+            <figure>
+              <img src="../images/case-thumb2.jpg" alt="Media and influencer coverage">
+              <figcaption>Publication record by many media and influencers</figcaption>
+            </figure>
+            <figure>
+              <img src="../images/case-thumb3.jpg" alt="Retail store expansion">
+              <figcaption>Over 600 shops. Expand sales at famous retailers</figcaption>
+            </figure>
+          </div>
+          <img class="ref-product" src="../images/townew-case.jpg" alt="TOWNEW product photo">
+        </div>
+      </div>
+      <!-- ▲ ここまで -->
+
+      <!-- ▼ TOKYO INTERNATIONAL GIFT SHOW: 会場写真（全クライアント共通・固定資産）を差し込んでください -->
+      <div class="giftshow-block">
+        <img src="../images/tokyo-gift-show.jpg" alt="Tokyo International Gift Show">
+        <div class="giftshow-body">
+          <span class="label">Event</span>
+          <h3>TOKYO INTERNATIONAL GIFT SHOW</h3>
+          <p>We will cover all expenses, so there is nothing for you to do. The show attracts over 300,000 visitors in 3 days, including buyers from famous Japanese retailers and wholesalers.</p>
+        </div>
+      </div>
+      <!-- ▲ ここまで -->
+    </div>
+  </section>
+
+  <section id="profile">
+    <div class="wrap">
+      <div class="section-head"><h2>COMPANY PROFILE</h2></div>
+      <p class="lede">Let's develop Japanese market with us!</p>
+      <table class="profile-table">
+        <tr><th>Company name</th><td>LIVIKO Co.Ltd</td></tr>
+        <tr><th>Representative</th><td>Singo Mugisawa</td></tr>
+        <tr><th>Address</th><td>3F, Itsumi Building, 3-88 Daimon-cho, Omiya-ku, Saitama City, Saitama Prefecture 330-0846 Japan</td></tr>
+        <tr><th>Founded</th><td>Founded in 1976</td></tr>
+        <tr class="opt-row"><th>Capital</th><td>20,000,000JPY</td></tr>
+        <tr><th>Business</th><td class="opt-fallback">Advertising Industry/Import / Wholesale / Retail business</td></tr>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span class="wordmark"><img src="https://drive.google.com/thumbnail?id=1wcUFvCcZqkut18iQ_TIpNc_6X_9twLX_&sz=w2000" alt="LIVIKO Co.Ltd logo">LIVIKO Co.Ltd</span>
+  <span class="fine">© LIVIKO Co.Ltd. All Rights Reserved.</span>
+</footer>
+
+</body>
+</html>
