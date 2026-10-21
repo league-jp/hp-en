@@ -69,8 +69,12 @@
   .ceo-photo[src=""] { display: none; } /* 代表者/会社の写真が未提出のときは非表示（テキストのみ表示） */
   .ceo-meta .name { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 560; }
   .ceo-meta .role { font-size: 0.76rem; color: var(--ink-faint); margin-top: 0.1rem; }
-  /* 経歴が長い場合でもカードが本文より大幅に高くならないよう、4行で省略しています */
-  .ceo-meta p { margin-top: 0.5rem; font-size: 0.86rem; color: var(--ink-soft); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
+  /* 経歴が長い場合でもカードが本文より大幅に高くならないよう、4行で省略し、
+     省略されたときだけ「Read more」ボタンで全文を開閉できるようにしています */
+  .ceo-meta .ceo-bio { margin-top: 0.5rem; font-size: 0.86rem; color: var(--ink-soft); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
+  .ceo-meta .ceo-bio.open { display: block; overflow: visible; }
+  .ceo-toggle { margin-top: 0.4rem; padding: 0; border: 0; background: none; cursor: pointer; font: inherit; font-size: 0.8rem; color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+  .ceo-toggle[hidden] { display: none; }
 
   /* ---------------- OUR SERVICES（https://drive.google.com/thumbnail?id=1XWOuIgsqitO0ksdehqDSveK6te6cDLJU&sz=w2000 を差し込み） ---------------- */
   .services-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3rem; align-items: start; }
@@ -177,7 +181,8 @@
           <div class="ceo-meta">
             <div class="name">Tomohisa Kawabata</div>
             <div class="role">CEO</div>
-            <p>With extensive experience in food wholesale, retail sales, product planning, and business development, he has led sales activities with major retailers and the development of new business channels. His strengths include building long-term relationships with retail partners, developing private-label products, and expanding sales channels across both B2B and B2C markets.</p>
+            <p class="ceo-bio" id="ceoBio">With extensive experience in food wholesale, retail sales, product planning, and business development, he has led sales activities with major retailers and the development of new business channels. His strengths include building long-term relationships with retail partners, developing private-label products, and expanding sales channels across both B2B and B2C markets.</p>
+            <button type="button" class="ceo-toggle" id="ceoToggle" hidden aria-expanded="false" aria-controls="ceoBio">Read more</button>
           </div>
         </div>
       </div>
@@ -303,5 +308,18 @@ We are looking to build long-term partnerships with innovative brands and manufa
   <span class="fine">© Osakaya Bussan Co., Ltd.. All Rights Reserved.</span>
 </footer>
 
+<script>
+/* CEO経歴が4行を超えて省略されたときだけ「Read more」を表示し、押すと全文を開閉する */
+(function(){
+  var b=document.getElementById('ceoBio'), t=document.getElementById('ceoToggle');
+  if(!b||!t) return;
+  function check(){ if(!b.classList.contains('open')) t.hidden = b.scrollHeight <= b.clientHeight + 1; }
+  check(); window.addEventListener('load',check); window.addEventListener('resize',check);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(check);
+  t.addEventListener('click',function(){
+    var o=b.classList.toggle('open'); t.setAttribute('aria-expanded',o); t.textContent=o?'Close':'Read more';
+  });
+})();
+</script>
 </body>
 </html>
