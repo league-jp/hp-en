@@ -19,15 +19,18 @@
     --brand: #556B2F;       /* クライアントの「基調色」をそのままCSS変数に流し込む */
     --brand-light: #556B2F;
     --brand-wash: color-mix(in srgb, #556B2F 16%, var(--paper));
+    /* 明るい背景に載せる文字・線用。基調色が白や薄い色でも読めるよう、明るさを上限0.55に抑える（濃い基調色はそのまま） */
+    --brand-text: color-mix(in srgb, var(--brand) 55%, var(--ink));
     --warm: #b9803a;
   }
+  @supports (color: oklch(from red l c h)) { :root { --brand-text: oklch(from var(--brand) min(l, 0.55) c h); } }
   * { box-sizing: border-box; }
   @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; } }
   body { background: var(--paper); color: var(--ink); font-family: 'Archivo', 'Hiragino Sans', sans-serif; line-height: 1.7; -webkit-font-smoothing: antialiased; margin: 0; }
   .wrap { max-width: 1040px; margin: 0 auto; padding: 0 2rem; }
-  .label { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand); }
+  .label { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand-text); }
   h1, h2, h3 { font-family: 'Fraunces', serif; color: var(--ink); margin: 0; }
-  a { color: var(--brand); }
+  a { color: var(--brand-text); }
 
   nav { border-bottom: 1px solid var(--rule); position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(6px); }
   .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 0; }
@@ -38,9 +41,9 @@
   .navlinks a { color: var(--ink-soft); text-decoration: none; }
   @media (max-width: 640px) { .navlinks { display: none; } }
 
-  /* ---------------- HERO（https://drive.google.com/thumbnail?id=1nADCBLoBsvAHVAiMkK7LADdGIsih9eMO&sz=w2000 を背景に使用） ---------------- */
+  /* ---------------- HERO（../images/clients/studionika/hero.png を背景に使用） ---------------- */
   .hero { position: relative; padding: 6.5rem 0 6rem; overflow: hidden; color: #f6f9fa; }
-  .hero-bg { position: absolute; inset: 0; z-index: 0; background: url('https://drive.google.com/thumbnail?id=1nADCBLoBsvAHVAiMkK7LADdGIsih9eMO&sz=w2000') center/cover no-repeat, linear-gradient(155deg, var(--ink), var(--brand)); }
+  .hero-bg { position: absolute; inset: 0; z-index: 0; background: url('../images/clients/studionika/hero.png') center/cover no-repeat, linear-gradient(155deg, var(--ink), var(--brand)); }
   .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, var(--ink) 40%, transparent) 0%, color-mix(in srgb, var(--ink) 80%, transparent) 100%); }
   .hero-inner { position: relative; z-index: 1; max-width: 640px; }
   .hero .label { color: #fff; opacity: 0.85; }
@@ -56,7 +59,7 @@
      62ch/58chの制限だと右側に大きな余白ができてしまうため、より広い幅を使えるようにしています */
   p.wide-copy, p.lede.wide-copy { max-width: 74ch; }
 
-  /* ---------------- ABOUT US（https://drive.google.com/thumbnail?id=1-eHL-DAz2fnVgrV6TWPO1zJWGW9vE4hu&sz=w2000 を差し込み） ---------------- */
+  /* ---------------- ABOUT US（../images/clients/studionika/about.png を差し込み） ---------------- */
   /* CEOの写真・経歴は「本文の隣に縦長カードを並べる」形だと、本文が短いときに
      カードの下や右に不自然な余白ができてしまうため、丸い小さな写真＋短い経歴の
      コンパクトな紹介カードにして、本文の右側に並べる（余白が出にくい）構成にしています。 */
@@ -73,10 +76,10 @@
      省略されたときだけ「Read more」ボタンで全文を開閉できるようにしています */
   .ceo-meta .ceo-bio { margin-top: 0.5rem; font-size: 0.86rem; color: var(--ink-soft); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
   .ceo-meta .ceo-bio.open { display: block; overflow: visible; }
-  .ceo-toggle { margin-top: 0.4rem; padding: 0; border: 0; background: none; cursor: pointer; font: inherit; font-size: 0.8rem; color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+  .ceo-toggle { margin-top: 0.4rem; padding: 0; border: 0; background: none; cursor: pointer; font: inherit; font-size: 0.8rem; color: var(--brand-text); text-decoration: underline; text-underline-offset: 3px; }
   .ceo-toggle[hidden] { display: none; }
 
-  /* ---------------- OUR SERVICES（https://drive.google.com/thumbnail?id=1saZCOhUYmC9HFK0JTuc_2CzXrjkxeqw2&sz=w2000 を差し込み） ---------------- */
+  /* ---------------- OUR SERVICES（../images/clients/studionika/services.png を差し込み） ---------------- */
   .services-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3rem; align-items: start; }
   @media (max-width: 720px) { .services-grid { grid-template-columns: 1fr; } }
   /* 写真の縦横比を4/5（かなり縦長）から4/3にして、右側のリストの高さに近づけています */
@@ -85,7 +88,7 @@
   .services-intro { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 0.6rem; }
   .service-row { display: grid; grid-template-columns: 3.4rem 1fr; gap: 1.4rem; padding: 1.7rem 0; border-top: 1px solid var(--rule); }
   .service-row:first-child { border-top: none; }
-  .service-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--brand); padding-top: 0.15rem; }
+  .service-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--brand-text); padding-top: 0.15rem; }
   .service-row p { color: var(--ink-soft); font-size: 0.98rem; margin: 0; }
 
   .logo-row { display: flex; flex-wrap: wrap; gap: 2.6rem; margin: 1.8rem 0 2rem; align-items: center; }
@@ -104,7 +107,7 @@
   .process-step:last-child { padding-bottom: 0; }
   .process-step::before { content: ''; position: absolute; left: 1.55rem; top: 2.6rem; bottom: 0; width: 1px; background: var(--rule); }
   .process-step:last-child::before { display: none; }
-  .process-num { width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 1px solid var(--brand); color: var(--brand); font-family: 'IBM Plex Mono', monospace; font-size: 0.88rem; display: flex; align-items: center; justify-content: center; background: var(--paper); position: relative; z-index: 1; }
+  .process-num { width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 1px solid var(--brand-text); color: var(--brand-text); font-family: 'IBM Plex Mono', monospace; font-size: 0.88rem; display: flex; align-items: center; justify-content: center; background: var(--paper); position: relative; z-index: 1; }
   .process-step h3 { font-size: 1.1rem; font-weight: 500; font-family: 'Archivo', sans-serif; margin-bottom: 0.4rem; }
   .process-step p { color: var(--ink-soft); font-size: 0.95rem; margin: 0; }
 
@@ -173,11 +176,11 @@
   <section id="about">
     <div class="wrap">
       <div class="section-head"><h2>ABOUT US</h2></div>
-      <img class="about-photo" src="https://drive.google.com/thumbnail?id=1-eHL-DAz2fnVgrV6TWPO1zJWGW9vE4hu&sz=w2000" alt="STUDIO NIKA">
+      <img class="about-photo" src="../images/clients/studionika/about.png" alt="STUDIO NIKA">
       <div class="about-grid">
         <p class="lede">Our mission is to connect Japan with overseas manufacturers of great products by building a bridge between Japan and the world, and to provide new value through these products to customers throughout Japan.</p>
         <div class="ceo-byline">
-          <img class="ceo-photo" src="https://drive.google.com/thumbnail?id=1tZGQ3WZ6MFcZQdSBGSgAczdnAR4PyVaX&sz=w2000" alt="Ryutaro Sakai">
+          <img class="ceo-photo" src="../images/clients/studionika/ceo.jpg" alt="Ryutaro Sakai">
           <div class="ceo-meta">
             <div class="name">Ryutaro Sakai</div>
             <div class="role">CEO</div>
@@ -193,7 +196,7 @@
     <div class="wrap">
       <div class="section-head"><h2>OUR SERVICES</h2></div>
       <div class="services-grid">
-        <img class="services-photo" src="https://drive.google.com/thumbnail?id=1saZCOhUYmC9HFK0JTuc_2CzXrjkxeqw2&sz=w2000" alt="STUDIO NIKA services">
+        <img class="services-photo" src="../images/clients/studionika/services.png" alt="STUDIO NIKA services">
         <div class="service-list">
           <p class="services-intro">We have been running businesses for long period of time and value the following Corporate Identities.</p>
           <div class="service-row"><div class="service-num">01</div><p>Be a fastest distributor in Japan.</p></div>
